@@ -6,14 +6,14 @@
   <groupId>net.java.dev.jna</groupId>
   <artifactId>jna</artifactId>
   <packaging>jar</packaging>
-  <version>3.3.0</version>
+  <version>3.3.0-jenkins-1</version>
   <name>Java Native Access</name>
     
-   <distributionManagement>
+  <distributionManagement>
     <repository>
       <uniqueVersion>false</uniqueVersion>
-      <id>java.net-m2-repository</id>
-      <url>java-net:/maven2-repository~svn/trunk/repository/</url>
+      <id>maven.jenkins-ci.org</id>
+      <url>http://maven.jenkins-ci.org:8081/content/repositories/releases</url>
     </repository>
   </distributionManagement>
 
