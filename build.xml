@@ -388,6 +388,7 @@
       <arg value="JNA_JNI_VERSION=${jni.version}"/>
       <arg value="CHECKSUM=${jni.md5}"/>
     </exec>
+<!-- Not trying to rebuild native jar, so instead of using the custom built jar, just reuse pre-built jars
     <mkdir dir="${classes}/com/sun/jna/${os.prefix}"/>
     <copy todir="${classes}/com/sun/jna/${os.prefix}">
       <fileset dir="${build.native}"
@@ -399,8 +400,14 @@
       <fileset dir="${build.native}"
                includes="jnidispatch.dll,libjnidispatch.*"/>
     </copy>
+-->
+    <mkdir dir="${classes}/com/sun/jna/${os.prefix}/"/>
+    <unjar src="${dist}/${native.jar}" dest="${classes}/com/sun/jna/${os.prefix}/"/>
+    <copy file="${dist}/${native.jar}" todir="${build}"/>
+
     <!-- For web start, native libraries may be provided in the root of -->
     <!-- an included jar file -->
+<!-- Not trying to rebuild native jar
     <jar jarfile="${build}/${native.jar}">
       <fileset dir="${build.native}" includes="jnidispatch.dll,libjnidispatch.*"/>
       <manifest>
@@ -408,6 +415,7 @@
         <attribute name="Specification-Version" value="${jni.version}"/>
       </manifest>
     </jar>
+-->
   </target>
 
   <target name="compile-tests" depends="compile,native,jar" 
