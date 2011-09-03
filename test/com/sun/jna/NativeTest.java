@@ -300,11 +300,16 @@ public class NativeTest extends TestCase {
         assertEquals("Bad replace", "abcdefg", Native.replace("z", "d", "abczefg"));
         assertEquals("Bad replace", "abcaefa", Native.replace("z", "a", "zbczefz"));
     }
+    
+    public void testCanWriteInTempDir() {
+        File dir = Native.getTempDir();
+        assertTrue("Can't write in " + dir, dir.canWrite());
+    }
 
+    // this test verifies that markTemporaryFile() followed by removeTemporaryFiles() effectively deletes a temporary directory.
     public void testRemoveTemporaries() throws Exception {
         File dir = Native.getTempDir();
-        File tmp = new File(dir, "jna");
-        tmp.delete();
+        File tmp = findNonExistingTempDirectoryUnder(dir);
         try {
             assertTrue("Couldn't create temporary file " + tmp, tmp.createNewFile());
             Native.markTemporaryFile(tmp);
@@ -314,6 +319,19 @@ public class NativeTest extends TestCase {
         finally {
             tmp.delete();
         }
+    }
+    
+    private static final File findNonExistingTempDirectoryUnder(File dir) {
+        File tmp = new File(dir, "jna");
+        // potential permission issues - e.g. if owned by a different user
+        if (tmp.exists() && !tmp.delete()) {
+            tmp = new File(dir, "jna2");
+            if (tmp.exists()) {
+                tmp.delete();
+            }
+        }
+        assertTrue("Test precondition: able to find a non existing temp Directory: " + tmp, !tmp.exists());
+        return tmp;
     }
 
     public static void main(String[] args) {
