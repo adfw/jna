@@ -224,7 +224,7 @@ public class NativeLibrary {
 
         // Use current process to load libraries we know are already
         // loaded by the VM to ensure we get the correct version
-        if (Platform.isLinux() || Platform.isFreeBSD() && "c".equals(libraryName)) {
+        if ((Platform.isLinux() || Platform.isFreeBSD()) && "c".equals(libraryName)) {
             libraryName = null;
         }
         synchronized (libraries) {
