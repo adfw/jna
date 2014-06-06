@@ -133,7 +133,7 @@ public class NativeLibrary {
             }
         }
         catch(UnsatisfiedLinkError e) {
-            if (Platform.isLinux()) {
+            if (Platform.isLinux() || Platform.isFreeBSD()) {
                 //
                 // Failed to load the library normally - try to match libfoo.so.*
                 //
@@ -224,7 +224,7 @@ public class NativeLibrary {
 
         // Use current process to load libraries we know are already
         // loaded by the VM to ensure we get the correct version
-        if (Platform.isLinux() && "c".equals(libraryName)) {
+        if (Platform.isLinux() || Platform.isFreeBSD() && "c".equals(libraryName)) {
             libraryName = null;
         }
         synchronized (libraries) {
@@ -509,7 +509,7 @@ public class NativeLibrary {
             }
             return name;
         }
-        else if (Platform.isLinux()) {
+        else if (Platform.isLinux() || Platform.isFreeBSD()) {
             if (isVersionedName(libName) || libName.endsWith(".so")) {
                 // A specific version was requested - use as is for search
                 return libName;
